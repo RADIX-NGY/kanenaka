@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1" date="2010-04-22">
+	<author name="イージーゲート" link="http://www.ezgate.co.jp" />
+	<title>CL01用アイテムボックステンプレート</title>
+	<description>
+	CL01デフォルトのアイテムボックステンプレートです。
+	</description>
+	<modified>
+	<!-- 納品後の修正履歴を記述してください。 -->
+	</modified>
+  <preview_settings>
+    <var name="親カテゴリ内一覧" type="parent" action="index" />
+<!-- SPがある場合、この↓コメントアウトを開放する -->
+<!--
+    <var name="親カテゴリ内一覧" app="sp" type="parent" action="index" />
+-->
+  </preview_settings>
+
+  <!-- 管理画面の一覧変化と、管理画面・表画面の基本並び替えの変更（date1-desc,name-asc,title-asc）
+  <index_settings>
+    <orders>
+      <order>
+        <field>date1</field>
+        <direction>desc</direction>
+      </order>
+      <order>
+        <field>name</field>
+        <direction>asc</direction>
+      </order>
+      <order>
+        <field>title</field>
+        <direction>asc</direction>
+      </order>
+    </orders>
+  </index_settings>
+  -->
+
+  <!-- 管理画面の一覧の項目を定義したい場合（nameの後ろにtitle）
+  <index_settings>
+    <orders>
+      <order>
+        <field>name</field>
+      </order>
+      <order>
+        <field>title</field>
+      </order>
+    </orders>
+  </index_settings>
+  -->
+
+  <!--
+  limit値を定義したい場合、index_settingsの中にlimitタグを追加する。
+  controllerを編集しなくてもページングのlimit値を指定できる。
+  他のindex_settingsの内容と一緒に書ける。
+
+  <index_settings>
+    <limit>10</limit>
+  </index_settings>
+  -->
+
+  <!-- カタログ注文用設定 -->
+  <!--
+  <index_settings>
+    <orders>
+      <order>
+        <field>name</field>
+      </order>
+      <order>
+        <field>word3</field>
+      </order>
+    </orders>
+  </index_settings>
+  -->
+
+	<fields>
+		<var name="name" type="text" use="1">
+			<title>管理用タイトル</title>
+			<attributes class="required" />
+			<description>※管理画面にて一覧表示されるタイトルになります。管理用タイトルは重複させることが出来ません。</description>
+		</var>
+		<var name="title" type="text" use="1">
+			<title>タイトル</title>
+			<attributes class="copy-target" />
+			<description>※実際に画面へ表示されるタイトルになります。</description>
+		</var>
+<!--
+		<var name="page_title" type="text" use="1">
+			<title>ページタイトル</title>
+			<attributes class="copy-target" />
+			<description>※検索エンジンに知らせるカタログページの名前です。ブラウザのタブ部分にも表示されます。未入力にするとデフォルトの文字列が表示されるようになります。</description>
+		</var>
+		<var name="keywords" type="text" use="1">
+			<title>Keywords</title>
+			<attributes class="copy-target" />
+			<description>※検索エンジンに知らせるカタログページの関連キーワードです。カンマ（,）で区切って入力して下さい。未入力にするとデフォルトの文字列が表示されるようになります。</description>
+		</var>
+		<var name="description" type="text" use="1">
+			<title>Description</title>
+			<attributes class="copy-target" />
+			<description>※検索エンジンに知らせるカタログページの説明文です。未入力にすると設定されません。未入力にするとデフォルトの文字列が表示されるようになります。</description>
+		</var>
+-->
+		<var name="enable" type="select" use="1">
+			<title>公開設定</title>
+			<options>
+				<Y>公開</Y>
+				<N>非公開</N>
+				<T>公開期間指定</T>
+			</options>
+			<default>Y</default>
+      <sns>Y</sns>
+			<attributes />
+		</var>
+		<var name="start" type="date" use="1">
+			<title>公開開始日時</title>
+			<attributes class="datepicker required" />
+		</var>
+		<var name="end" type="date" use="1">
+			<title>公開終了日時</title>
+			<attributes class="datepicker required" />
+		</var>
+		<!--
+		<var name="date1" type="date" use="1">
+			<title>日付</title>
+			<attributes class="datepicker" />
+			<help>お知らせする日付を選択します。
+			日付は、表ページの日付に反映されます。</help>
+		</var>
+		<var name="new_mark" type="select" use="1">
+			<title>新着マーク</title>
+			<options>
+				<month>日付から一ヶ月間表示</month>
+				<two_weeks>日付から二週間表示</two_weeks>
+				<week>日付から一週間表示</week>
+				<N>表示しない</N>
+			</options>
+			<default>two_weeks</default>
+			<attributes />
+			<help>新着マークを表示する期間を選択してください。</help>
+		</var>
+
+		<var name="on_top_page" type="select" use="1">
+			<title>TOPに表示する</title>
+			<options>
+				<Y>TOPに表示する</Y>
+				<N>TOPに表示しない</N>
+			</options>
+			<default>Y</default>
+			<attributes />
+		</var>
+	-->
+
+
+		<var name="image1" type="image" use="1">
+			<title>画像1</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image2" type="image" use="1">
+			<title>画像2</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image3" type="image" use="1">
+			<title>画像3</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image4" type="image" use="1">
+			<title>画像4</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image5" type="image" use="1">
+			<title>画像5</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image6" type="image" use="1">
+			<title>画像6</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image7" type="image" use="1">
+			<title>画像7</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image8" type="image" use="1">
+			<title>画像8</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image9" type="image" use="1">
+			<title>画像9</title>
+			<attributes class="upload" />
+		</var>
+		<var name="image10" type="image" use="1">
+			<title>画像10</title>
+			<attributes class="upload" />
+		</var>
+
+
+
+		<var name="html1" type="tinymcearea" use="1">
+			<title>HTMLエリア</title>
+			<attributes class="tinymcearea" cols="32" rows="5" />
+		</var>
+
+
+<!--
+    <var name="sns" type="sns" use="1">
+			<title>SNS投稿</title>
+      <page_controller>catalog</page_controller>
+      <fb_message>WEBページを更新しました</fb_message>
+      <fb_title>page_title</fb_title>
+      <fb_image>image1</fb_image>
+      <fb_description>description</fb_description>
+      <fb_content>html1</fb_content>
+      <twitter_message>WEBページを更新しました</twitter_message>
+      <twitter_title>page_title</twitter_title>
+			<attributes />
+    </var>
+-->
+
+	</fields>
+</layout>

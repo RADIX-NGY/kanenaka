@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ページタイトル</title>
+
+<?php
+// jQuery本体の読み込み
+// ページ内で、全てのjQueryプラグインに先駆けて、一度だけ読み込まれなければならない
+// デザインHTML内で重複してる事がよくあるので、バージョンの一番高い物に統一すること
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<!-- colorbox -->
+<link media="screen" rel="stylesheet" href="<?php echo $this->Html->url('/');?>colorbox/colorbox.css" />
+<script src="<?php echo $this->Html->url('/');?>colorbox/jquery.colorbox.js"></script>
+<!-- colorbox -->
+<script>
+    // jQuery使用時、colorboxなどの各種jQueryプラグインや、ページ内で行うjavascriptの初期処理はこの中で行う
+    $(document).ready(function(){
+        // colorboxの呼び出し
+        $("a[rel^='colorbox']").colorbox({maxHeight:'95%'});
+
+        // colorboxの変則呼び出し 通常使わない
+        $("a[rel='slide']").colorbox({slideshow:true});
+
+        // colorboxとは何ら関係がない あるHTML要素をクリックした時にその要素のCSSを変更し、中身のテキストを変える、jQueryの例文と思われる
+        //Example of preserving a JavaScript event for inline calls.
+        $("#click").click(function(){
+            $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
+            return false;
+        });
+    });
+</script>
+<!-- // 初期処理系のscriptブロックは、なるべくheadの最後に入れる -->
+</head>
+<body>
+<?php
+//パン屑リスト
+$crumbs=array();
+if (count($hierarchy) > 0) {
+    krsort($hierarchy);
+    $current = array_shift($hierarchy);
+    $crumbs[] = $current['CatalogCategory']['title'];
+    foreach($hierarchy as $one) {
+        $crumbs[] = $this->Html->link($one['CatalogCategory']['title'], array('action'=>'index',$one['CatalogCategory']['id']));
+    }
+    krsort($crumbs);
+}
+array_unshift($crumbs,$this->Html->link('ホーム', array('controller'=>'homes','action'=>'index')));
+echo implode('&nbsp;>&nbsp;', $crumbs);
+?>
+
+<br />
+<br />
+<br />
+
+<?php
+// ページング
+echo $this->element('paging');
+?>
+
+<br />
+<br />
+<br />
+
+<?php
+//カテゴリ一覧
+foreach($category_all as $category):
+  extract($category,EXTR_PREFIX_ALL,'tbl');
+?>
+<div>
+ID:       <?php echo $tbl_id;?><br />
+タイトル: <?php echo $tbl_title;?><br />
+説明:     <?php echo $tbl_html1;?><br />
+<?php if (!empty($tbl_image1)):?>
+画像:     <a href="<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'width'=>600,'return'=>true)))?>" rel="colorbox" target="_blank"><?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'width'=>200,'alt'=>$tbl_image1_alt)))?></a><br />
+<?php endif;?>
+<?php echo $this->Html->link('このカテゴリの一覧を見る', array('action'=>'index',$tbl_id))."\n";?>
+</div>
+<?php
+// テンプレートのinfo.xml情報をこの変数に格納しています。
+pr($template_info);
+?>
+<?php
+  //使った変数を初期化
+  foreach($category as $key => $data){
+    ${'tbl_'.$key} = null;
+  }
+?>
+<?php endforeach;?>
+
+</body>
+</html>

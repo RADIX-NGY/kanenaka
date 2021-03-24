@@ -1,0 +1,198 @@
+<?php
+// $target_id は従来の $parent_id を別の表記にしたものです。$parent_id もそのまま使えます。
+// $category は $category_all[$target_id] を改めて別の変数にしたものです。
+
+//$pageTitle、$metaDescription、$metaKeywordsは予めデザインで指定されている文言に置き換えてください。
+//記入されていない、管理画面から等が記述されている場合はブランクにして下さい。
+if (empty($target['page_title'])) {
+  $pageTitle = "ページタイトル";
+} else {
+  $pageTitle = $target['page_title'];
+}
+if (empty($target['description'])) {
+  $metaDescription = "ディスクリプション";
+} else {
+  $metaDescription = $target['description'];
+}
+if (empty($target['keywords'])) {
+  $metaKeywords = "キーワード";
+} else {
+  $metaKeywords = $target['keywords'];
+}
+?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title><?php echo $pageTitle?></title>
+<meta name="description" content="<?php echo $metaDescription?>" />
+<meta name="keywords" content="<?php echo $metaKeywords?>" />
+
+<?php
+// jQuery本体の読み込み
+// ページ内で、全てのjQueryプラグインに先駆けて、一度だけ読み込まれなければならない
+// デザインHTML内で重複してる事がよくあるので、バージョンの一番高い物に統一すること
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<!-- colorbox -->
+<link media="screen" rel="stylesheet" href="<?php echo $this->Html->url('/');?>colorbox/colorbox.css" />
+<script src="<?php echo $this->Html->url('/');?>colorbox/jquery.colorbox.js"></script>
+<!-- colorbox -->
+<script>
+    // jQuery使用時、colorboxなどの各種jQueryプラグインや、ページ内で行うjavascriptの初期処理はこの中で行う
+    $(document).ready(function(){
+        // colorboxの呼び出し
+        $("a[rel^='colorbox']").colorbox({maxHeight:'95%'});
+
+        // colorboxの変則呼び出し 通常使わない
+        $("a[rel='slide']").colorbox({slideshow:true});
+
+        // colorboxとは何ら関係がない あるHTML要素をクリックした時にその要素のCSSを変更し、中身のテキストを変える、jQueryの例文と思われる
+        //Example of preserving a JavaScript event for inline calls.
+        $("#click").click(function(){
+            $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
+            return false;
+        });
+    });
+</script>
+<!-- // 初期処理系のscriptブロックは、なるべくheadの最後に入れる -->
+</head>
+<body>
+<?php
+//パン屑リスト
+$crumbs=array();
+if (count($hierarchy) > 0) {
+    krsort($hierarchy);
+    $current = array_shift($hierarchy);
+    $crumbs[] = $current['CatalogCategory']['title'];
+    foreach($hierarchy as $one) {
+        $crumbs[] = $this->Html->link($one['CatalogCategory']['title'], array('action'=>'index',$one['CatalogCategory']['id']));
+    }
+    krsort($crumbs);
+}
+array_unshift($crumbs,$this->Html->link('ホーム', array('controller'=>'homes','action'=>'index')));
+echo implode('&nbsp;>&nbsp;', $crumbs);
+?>
+
+<br />
+<hr />
+<br />
+
+<?php /* カテゴリ一覧メニュー */ ?>
+<ul>
+<?php foreach($category_all as $category_id => $category):?>
+<li<?php if ($category_id == $target_id):?> class="on"<?php endif;?>><?php echo $this->Html->link($category['title'], array('action'=>'index',$category_id));?></li>
+<?php endforeach;?>
+</ul>
+
+<br />
+<hr />
+<br />
+
+
+<?php
+//現在のカテゴリ
+?>
+ID:       <?php echo $target['id'];?><br />
+タイトル: <?php echo $target['title'];?><br />
+説明:     <?php echo $target['html1'];?><br />
+<?php if (!empty($target['image1'])):?>
+画像:     <?php echo $this->element('media', array('var'=>array('id'=>$target['image1'],'width'=>200,'alt'=>$target['image1_alt'])));?>
+<?php endif;?>
+
+<br />
+<hr />
+<br />
+
+<?php
+// ページング
+echo $this->element('paging');
+?>
+
+<br />
+<hr />
+<br />
+
+<?php
+//アイテム一覧
+foreach($boxes as $box):
+  extract($box['CatalogBox'],EXTR_PREFIX_ALL,'tbl');
+?>
+ID:       <?php echo $tbl_id;?><br />
+タイトル: <?php echo $tbl_title;?><br />
+説明:     <?php echo $tbl_html1;?><br />
+<?php if(!empty($tbl_check1)):?>
+<?php
+$tbl_check1 = unserialize($tbl_check1);
+if (!empty($tbl_check1)) {
+  foreach($tbl_check1 as $checkname => $check) {
+    echo $checkname.' : '.$check.'<br />';
+  }
+}
+?>
+<?php endif;?>
+
+<?php if (!empty($tbl_image1)):?>
+<p>画像　指定した幅と高さ以内で、縦横比率固定したまま、最大サイズにする　位置揃え無し</p>
+<p style="margin-bottom:10px;">
+<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'maxwidth'=>320,'maxheight'=>240,'alt'=>$tbl_image1_alt)));?>
+</p>
+
+<p>画像　指定した幅と高さ以内で、縦横比率固定したまま、最大サイズにする　canvas内で縦横センタリング</p>
+<p style="margin-bottom:10px;">
+<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'maxwidth'=>320,'maxheight'=>240,'alt'=>$tbl_image1_alt,'canvas'=>array('width'=>322,'height'=>242))));?>
+</p>
+
+<p>画像　指定した幅と高さ以内で、縦横比率固定したまま、最大サイズにする　canvas内で縦横センタリング、さらにcanvas背景を黒に</p>
+<p style="margin-bottom:10px;">
+<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'maxwidth'=>320,'maxheight'=>240,'alt'=>$tbl_image1_alt,'canvas'=>array('width'=>322,'height'=>242,'background'=>'#000'))));?>
+</p>
+
+<p>画像<br />縦横比率固定したまま600px幅へサイズ変更した画像へのURLを取得してリンク先に設定<br />リンク元の画像は、縦横比率固定したまま200px幅へサイズ変更した画像</p>
+<p style="margin-bottom:10px;">
+<a href="<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'width'=>600,'return'=>true)))?>" rel="colorbox" target="_blank"><?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'width'=>200,'alt'=>$tbl_image1_alt)))?></a>
+</p>
+
+<p>画像<br />
+レスポンシブでimg-responsiveなどのクラスがかかっていて、画像の大きさが変化する時のタグの出し方<br />
+重くなりすぎないようにwidthを制限している。
+適宜変更されたし</p>
+<p style="margin-bottom:10px;">
+<img src="<?php echo $this->element('media', array('var'=>array('id'=>$tbl_image1,'width'=>800,'return'=>true)));?>" alt="<?php echo $tbl_image1_alt;?>">
+</p>
+
+<?php endif;?>
+
+<?php if(!empty($tbl_file1)):?>
+<p style="margin-bottom:10px;">
+<a href="<?php echo $this->element('media', array('var'=>array('id'=>$tbl_file1,'return'=>true)))?>" target="_blank"><?php echo $tbl_file1_title?></a>
+</p>
+<?php endif;?>
+
+<hr />
+<?php
+  //使った変数を初期化
+  foreach($box['CatalogBox'] as $key=>$data){
+    ${'tbl_'.$key} = null;
+  }
+?>
+<?php endforeach;?>
+
+<?php
+// テンプレートのinfo.xml情報をこの変数に格納しています。
+pr($template_info);
+?>
+
+<!-- カテゴリ一覧へ戻る -->
+<a href="<?php
+// カテゴリ一覧を利用しない場合はこの処理ブロックごとコメントアウト
+$params = array('action'=>'index');
+if ($target['index_page'] > 1) {
+  $params['page'] = $target['index_page'];
+}
+echo $this->Html->url($params);
+?>">カテゴリ一覧へ戻る</a>
+
+</body>
+</html>

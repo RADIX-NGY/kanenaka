@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+/* mainvisual */
+#main-image{position:relative;}
+
+.slider{position:relative;overflow: hidden;display:block;height: 810px;background: #000;}
+	@media only screen and (max-width:1199px)	 {.slider{height: 540px}}
+	@media only screen and (max-width:991px)	 {.slider{height: 480px}}
+	@media only screen and (max-width:767px)	 {.slider{height: 300px}}
+	@media only screen and (max-width:575px)	 {.slider{height: 300px}}
+
+.slider img{position:absolute;top:0;left:0;right:0;bottom:0;max-width:inherit;max-height:inherit;width:100%;height:100%;margin:auto;font-family: 'object-fit: cover;';object-fit: cover;opacity:.75;transform: scale(1.1);transition: 7s ease-out;}
+
+.swiper-slide-active .slider img, .swiper-slide-prev .slider img{
+ transform: scale(1.0);
+}
+
+
+.main-text{position: absolute;top: 105px;left: 0;right: 0;bottom: 0;z-index: 9;display: flex;justify-content:center;align-items:center;}
+	@media only screen and (max-width:991px)	 {.main-text{top: 50px;}}
+
+.main-copy{color:#FFF;text-shadow:0 0 6px rgba(0,0,0,.25);font-family: 'nserif',serif;}
+
+.main-copy h2{font-size:72px;line-height:1.25;margin-bottom: 20px;text-align: center;font-style: oblique;font-weight: normal;}
+	@media only screen and (max-width:1199px)	 {.main-copy h2{font-size: 54px;}}
+	@media only screen and (max-width:991px)	 {.main-copy h2{font-size: 48px;margin-bottom: 15px;}}
+	@media only screen and (max-width:767px)	 {.main-copy h2{font-size: 36px;margin-bottom: 10px;}}
+	@media only screen and (max-width:575px)	 {.main-copy h2{font-size: 30px;}}
+
+.main-copy p{font-size: 21px;line-height:.75;text-align: center;font-style: oblique;}
+	@media only screen and (max-width:1199px)	 {.main-copy p{font-size: 21px;}}
+	@media only screen and (max-width:991px)	 {.main-copy p{font-size: 18px;}}
+	@media only screen and (max-width:767px)	 {.main-copy p{font-size: 15px;}}
+	@media only screen and (max-width:575px)	 {.main-copy p{font-size: 14px;line-height: 1.5;}}
+
+
+
+.main-title1{margin-left: -200px;}
+.main-title2{margin-right: -200px;}
+	@media only screen and (max-width:767px)	 {
+		.main-title1{margin-left: -150px;}
+		.main-title2{margin-right: -150px;}
+	}
+	@media only screen and (max-width:575px)	 {
+		.main-title1{margin-left: -50px;}
+		.main-title2{margin-right: -50px;}
+	}
